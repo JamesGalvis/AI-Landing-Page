@@ -2,6 +2,7 @@
 import { Header } from "@/components/sections/header";
 import { Hero } from "@/components/sections/hero";
 import { LogoTicker } from "@/components/sections/logo-ticker";
+import { Features } from "@/components/sections/features";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Header />
       <Hero />
       <LogoTicker />
+      <Features />
     </>
   );
 }
