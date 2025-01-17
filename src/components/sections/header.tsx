@@ -1,25 +1,7 @@
 import { Logo } from "@/components/common/logo";
 import { MenuIcon } from "@/components/common/menu-icon";
 import { Button } from "@/components/common/button";
-
-const navLinks = [
-  {
-    label: "Features",
-    href: "#",
-  },
-  {
-    label: "Developers",
-    href: "#",
-  },
-  {
-    label: "Pricing",
-    href: "#",
-  },
-  {
-    label: "Changelog",
-    href: "#",
-  },
-];
+import { NavMenu } from "@/components/common/nav-menu";
 
 export function Header() {
   return (
@@ -32,13 +14,7 @@ export function Header() {
             </div>
           </div>
 
-          <nav className="flex items-center gap-8 text-sm text-white/70 max-md:hidden">
-            {navLinks.map(({ label, href }, i) => (
-              <a key={i} href={href} className="hover:text-white transition">
-                {label}
-              </a>
-            ))}
-          </nav>
+          <NavMenu className="max-md:hidden" />
 
           <div className="flex items-center gap-4">
             <Button>Join waitlist</Button>
