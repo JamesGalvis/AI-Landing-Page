@@ -73,15 +73,15 @@ export function Testimonials() {
         <div className="flex overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black,black_20%,black_80%,transparent)]">
           {!isLargerThanMd && (
             <motion.div
-              initial={{ translateX: "-50%" }}
-              animate={{ translateX: "0" }}
+              initial={{ translateX: "0" }}
+              animate={{ translateX: "-50%" }}
               transition={{
                 repeat: Infinity,
                 duration: 30,
                 ease: "linear",
               }}
               style={{ x }}
-              className="flex gap-5 flex-none pr-5 -translate-x-1/2"
+              className="flex gap-5 flex-none pl-5 -translate-x-1/2"
             >
               {[...testimonials, ...testimonials].map(
                 ({ name, text, title, avatarImg }, i) => (
