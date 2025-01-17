@@ -3,6 +3,11 @@ import avatar2 from "@/assets/images/avatar-2.png";
 import avatar3 from "@/assets/images/avatar-3.png";
 import avatar4 from "@/assets/images/avatar-4.png";
 
+import { useRef } from "react";
+import { useScroll, useTransform, motion } from "framer-motion";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { TestimonialCard } from "../common/testimonial-card";
+
 const testimonials = [
   {
     text: "“This product has completely transformed how I manage my projects and deadlines”",
@@ -31,9 +36,33 @@ const testimonials = [
 ];
 
 export function Testimonials() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const isLargerThanMd = useMediaQuery("(min-width: 765px)");
+  const isLargerThanLg = useMediaQuery("(min-width: 1024px)");
+  const isLargerThanXl = useMediaQuery("(min-width: 1280px)");
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const scrollX = () => {
+    if (isLargerThanXl) {
+      return ["2%", "-70%"];
+    } else if (isLargerThanLg) {
+      return ["2%", "-116%"];
+    } else if (isLargerThanMd) {
+      return ["2%", "-130%"];
+    } else {
+      return ["0%", "0%"];
+    }
+  };
+
+  const x = useTransform(scrollYProgress, [0, 1], scrollX());
+
   return (
-    <section className="py-20 md:py-24">
-      <div className="container">
+    <section ref={containerRef} className="py-20 md:py-24 md:h-[300vh]">
+      <div className="md:sticky md:top-[100px] container">
         <h2 className="text-5xl md:text-6xl font-medium text-center tracking-tighter">
           Beyond Expectations.
         </h2>
@@ -41,30 +70,48 @@ export function Testimonials() {
           Our revolutionary AI SEO tools have transformed our client's
           strategies
         </p>
-        <div className="overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black,black_20%,black_80%,transparent)]">
-          <div className="flex gap-5">
-            {testimonials.map(({ name, text, title, avatarImg }, i) => (
-              <div
-                key={i}
-                className="border border-white/15 p-6 md:p-10 max-w-xs md:max-w-md rounded-xl bg-[linear-gradient(to_bottom_left,rgb(140,69,255,.3),black)] flex-none"
-              >
-                <p className="text-lg md:text-2xl tracking-tight">{text}</p>
-                <div className="flex items-center gap-3 mt-5">
-                  <div className="relative after:content-[''] after:absolute after:inset-0 after:bg-[rgb(140,69,244)] after:mix-blend-soft-light before:content-[''] before:absolute before:inset-0 before:border before:border-white/30 before:z-10 before:rounded-lg">
-                    <img
-                      src={avatarImg}
-                      alt={`Avatar for ${name}`}
-                      className="size-11 rounded-lg grayscale"
-                    />
-                  </div>
-                  <div>
-                    <span>{name}</span>
-                    <p className="text-sm text-white/50">{title}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="flex overflow-hidden mt-10 [mask-image:linear-gradient(to_right,transparent,black,black_20%,black_80%,transparent)]">
+          {!isLargerThanMd && (
+            <motion.div
+              initial={{ translateX: "-50%" }}
+              animate={{ translateX: "0" }}
+              transition={{
+                repeat: Infinity,
+                duration: 30,
+                ease: "linear",
+              }}
+              style={{ x }}
+              className="flex gap-5 flex-none pr-5 -translate-x-1/2"
+            >
+              {[...testimonials, ...testimonials].map(
+                ({ name, text, title, avatarImg }, i) => (
+                  <TestimonialCard
+                    key={i}
+                    name={name}
+                    text={text}
+                    title={title}
+                    avatarImg={avatarImg}
+                    i={i}
+                  />
+                )
+              )}
+            </motion.div>
+          )}
+
+          {isLargerThanMd && (
+            <motion.div style={{ x }} className="flex gap-5">
+              {testimonials.map(({ name, text, title, avatarImg }, i) => (
+                <TestimonialCard
+                  key={i}
+                  name={name}
+                  text={text}
+                  title={title}
+                  avatarImg={avatarImg}
+                  i={i}
+                />
+              ))}
+            </motion.div>
+          )}
         </div>
       </div>
     </section>
